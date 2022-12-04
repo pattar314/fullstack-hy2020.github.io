@@ -258,7 +258,8 @@ Also create a `index.js` file in your project's root directory.
 The initial code is as follows: 
 
 ```js
-const { ApolloServer, gql } = require('@apollo/server')
+const { ApolloServer } = require('@apollo/server')
+const { startStandaloneServer } = require('@apollo/server/standalone')
 
 let persons = [
   {
@@ -283,7 +284,7 @@ let persons = [
   },
 ]
 
-const typeDefs = gql`
+const typeDefs = `
   type Person {
     name: String!
     phone: String
@@ -313,8 +314,8 @@ const server = new ApolloServer({
   resolvers,
 })
 
-server.listen().then(({ url }) => {
-  console.log(`Server ready at ${url}`)
+const { url } = await startStandaloneServer(server, {
+  context: async ({ req }) => ({listen: { port: 4000 }})
 })
 ```
 
