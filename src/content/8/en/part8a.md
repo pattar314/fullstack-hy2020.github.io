@@ -250,10 +250,9 @@ Let's implement a GraphQL server with today's leading library: [Apollo Server](h
 Create a new npm project with _npm init_ and install the required dependencies.
 
 ```bash
-npm install apollo-server@3.10.1 graphql
+npm install @apollo/server graphql
 ```
 
-**Note** at the time of writing (10th Dec 2022) the code used in this part is not fully compatible with the new version of the Apollo Server, and because of this, if you want everything to work smoothly you should install the version _3.10.1_. Material shall be updated to use the most recent Apollo Server in early 2023.
 
 Also create a `index.js` file in your project's root directory.
 
