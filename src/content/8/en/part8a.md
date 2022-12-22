@@ -258,7 +258,8 @@ Also create a `index.js` file in your project's root directory.
 The initial code is as follows: 
 
 ```js
-const { ApolloServer, gql } = require('@apollo/server')
+import { ApolloServer } from '@apollo/server'
+import { startStandaloneServer } from '@apollo/server/standalone'
 
 let persons = [
   {
@@ -283,7 +284,7 @@ let persons = [
   },
 ]
 
-const typeDefs = gql`
+const typeDefs = `
   type Person {
     name: String!
     phone: String
@@ -308,9 +309,8 @@ const resolvers = {
   }
 }
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+const { url } = await startStandaloneServer(server, {
+  context: async ({ req }) => ({listen: { port: 4000 }})
 })
 
 server.listen().then(({ url }) => {
@@ -727,8 +727,10 @@ const resolvers = {
     addPerson: (root, args) => {
       // highlight-start
       if (persons.find(p => p.name === args.name)) {
-        throw new UserInputError('Name must be unique', {
-          invalidArgs: args.name,
+        throw new GraphQLError('Name must be unique', {
+          extensions: {
+            invalidArgs: args.name
+          }
         })
       }
       // highlight-end
